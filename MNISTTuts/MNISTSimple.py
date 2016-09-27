@@ -36,13 +36,13 @@ def train_classifier(dataset, runs=1000):
 
 def TC_Stats(tries, per_train_runs, dataset):
     runsum = 0
-    print("starting runs")
+    #print("starting runs")
     for i in range(1, tries + 1):
         runAcc = train_classifier(dataset, per_train_runs)
-        print(str(i) + ": " + str(round(runAcc * 100, 2)) + "%")
+        #print(str(i) + ": " + str(round(runAcc * 100, 2)) + "%")
         runsum += runAcc
     avg = round((runsum / tries) * 100, 2)
-    print("over " + str(tries) + " runs the network averaged: " + str(avg) + "%")
+    #print("over " + str(tries) + " runs the network averaged: " + str(avg) + "%")
     return avg
 
 
