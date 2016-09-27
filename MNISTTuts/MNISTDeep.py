@@ -77,7 +77,7 @@ W_Conv1 = weight_variable([5,5,1,32]) #32 features for 5x5 patches in the image
 b_conv1 = bias_variable([32])
 
 #making the flattened images into 4D tensors
-fourD_images = tf.reshape(images, [-1,28,28,1]) #fourth dimension here is color channels (grayscale = 1)
+fourD_images = tf.reshape(images, [-1,28,28,1]) # [batch, height, width, channels]
 
 # applying convolution on the image trough the first layer
 h_conv1 = tf.nn.relu(vanilla_conv2D(fourD_images, W_Conv1) + b_conv1)
