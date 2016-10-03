@@ -9,18 +9,16 @@ print("start")
 IRIS_TRAINING = "iris_training.csv"
 IRIS_TEST = "iris_test.csv"
 
+
 # Load datasets.
-print("load")
 training_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TRAINING,
                                                        target_dtype=np.int)
 test_set = tf.contrib.learn.datasets.base.load_csv(filename=IRIS_TEST,
                                                    target_dtype=np.int)
 
-print("feature")
 # Specify that all features have real-value data
 feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
 
-print("classier")
 # Build 3 layer DNN with 10, 20, 10 units respectively.
 classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
                                             hidden_units=[10, 20, 10],
@@ -28,13 +26,11 @@ classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
                                             model_dir="tmp/iris_model")
 
 # Fit model.
-print("fitter")
 classifier.fit(x=training_set.data,
                y=training_set.target,
                steps=2000)
 
 # Evaluate accuracy.
-print("scorer")
 accuracy_score = classifier.evaluate(x=test_set.data,
                                      y=test_set.target)["accuracy"]
 print('Accuracy: {0:f}'.format(accuracy_score))
