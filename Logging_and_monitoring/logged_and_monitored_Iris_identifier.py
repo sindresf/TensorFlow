@@ -21,11 +21,11 @@ feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
 
 # Build 3 layer DNN with 10, 20, 10 units respectively.
 classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-                                            hidden_units=[10, 20, 20, 20, 10],
+                                            hidden_units=[10, 20, 10],
                                             n_classes=3,
                                             model_dir="tmp/iris_model",
                                             config=tf.contrib.learn.RunConfig(
-                                                save_checkpoints_secs=0.1
+                                                save_checkpoints_secs=0.5
                                             ))
 validation_metrics = {"accuracy": tf.contrib.metrics.streaming_accuracy,
                       "precision": tf.contrib.metrics.streaming_precision,
