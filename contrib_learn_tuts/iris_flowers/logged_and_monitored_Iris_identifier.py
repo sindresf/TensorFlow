@@ -4,10 +4,10 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
-print("start")
 # Data sets
 IRIS_TRAINING = "iris_training.csv"
 IRIS_TEST = "iris_test.csv"
+tf.logging.set_verbosity(tf.logging.INFO)
 
 
 # Load datasets.
@@ -21,14 +21,29 @@ feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
 
 # Build 3 layer DNN with 10, 20, 10 units respectively.
 classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-                                            hidden_units=[10, 20, 10],
+                                            hidden_units=[10, 20, 20, 20, 10],
                                             n_classes=3,
-                                            model_dir="tmp/iris_model")
+                                            model_dir="tmp/iris_model",
+                                            config=tf.contrib.learn.RunConfig(
+                                                save_checkpoints_secs=0.1
+                                            ))
+validation_metrics = {"accuracy": tf.contrib.metrics.streaming_accuracy,
+                      "precision": tf.contrib.metrics.streaming_precision,
+                      "recall": tf.contrib.metrics.streaming_recall}
+
+validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(test_set.data,
+                                                                 test_set.target,
+                                                                 every_n_steps=50,
+                                                                 metrics=validation_metrics,
+                                                                 early_stopping_metric="loss",
+                                                                 early_stopping_metric_minimize=True,
+                                                                 early_stopping_rounds=200)
 
 # Fit model.
 classifier.fit(x=training_set.data,
                y=training_set.target,
-               steps=2000)
+               steps=1500,
+               monitors=[validation_monitor])
 
 # Evaluate accuracy.
 accuracy_score = classifier.evaluate(x=test_set.data,
